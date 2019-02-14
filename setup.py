@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tracker_ml",
-    version="0.0.9",
+    version="0.0.10",
     author="Sage Thomas",
     author_email="sage.thomas@outlook.com",
     description="Machine learning file and parameter version control SDK for www.tracker.ml",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sage-t/tracker_ml",
-    download_url="https://github.com/trackerml/trackerml-sdk/archive/v0.0.9.tar.gz",
+    download_url="https://github.com/trackerml/trackerml-sdk/archive/v0.0.10.tar.gz",
     keywords=["MACHINE", "LEARNING", "VERSION", "TRACKING", "TRACKER"],
     packages=["tracker_ml"],
     install_requires=['click'],

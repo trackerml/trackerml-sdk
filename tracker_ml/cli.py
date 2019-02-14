@@ -17,7 +17,7 @@ import tracker_ml.file_ops as fo
 
 __author__ = "Sage Thomas"
 __copyright__ = "Copyright 2018, tracker.ml"
-__version__ = "0.0.7"
+__version__ = "0.0.10"
 __maintainer__ = "Sage Thomas"
 __email__ = "sage.thomas@outlook.com"
 __status__ = "Development"
@@ -28,8 +28,9 @@ import click
 @click.group()
 @click.option('--debug/--no-debug', default=False)
 @click.option('--kaggle', '-k', 'kaggle', default=False)
+@click.option('--version', '-V', 'version', default=False)
 @click.pass_context
-def cli(ctx, debug, kaggle):
+def cli(ctx, debug, kaggle, version):
     # ensure that ctx.obj exists and is a dict (in case `cli()` is called
     # by means other than the `if` block below
     ctx.ensure_object(dict)
@@ -37,6 +38,9 @@ def cli(ctx, debug, kaggle):
     ctx.obj['CLI'] = True
     ctx.obj['DEBUG'] = debug
     ctx.obj['KAGGLE'] = kaggle
+
+    if version:
+        click.secho("version {}".format(__version__))
 
 
 @cli.command()
