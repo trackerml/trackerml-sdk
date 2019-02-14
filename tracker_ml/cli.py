@@ -27,14 +27,16 @@ import click
 
 @click.group()
 @click.option('--debug/--no-debug', default=False)
+@click.option('--kaggle', '-k', 'kaggle', default=False)
 @click.pass_context
-def cli(ctx, debug):
+def cli(ctx, debug, kaggle):
     # ensure that ctx.obj exists and is a dict (in case `cli()` is called
     # by means other than the `if` block below
     ctx.ensure_object(dict)
 
     ctx.obj['CLI'] = True
     ctx.obj['DEBUG'] = debug
+    ctx.obj['KAGGLE'] = kaggle
 
 
 @cli.command()
@@ -118,6 +120,21 @@ def push(ctx):
 # @click.pass_context
 # def tag(ctx):
 #     """ Tag given trial so it can later be searched or sorted by the status command """
+
+
+###################
+# Kaggle Commands #
+###################
+@cli.command()
+@click.pass_context
+@click.option("-c", "--competition_id", type=str, required=True)
+@click.option("-d", "--directory", click.Path(exists=True), default=".")
+def download(ctx, competition_id, directory):
+    """ Download Kaggle data """
+    if not ctx.obj['KAGGLE']:
+        click.secho("Error: option '-k' must be set", fg="red")
+        exit(1)
+    # TODO
 
 
 if __name__ == '__main__':

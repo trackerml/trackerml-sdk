@@ -72,3 +72,25 @@ def set_meta(meta: dict, ctx=None):
 
 def get_trial_ids(ctx=None):
     return os.listdir(get_trials_dir(ctx))
+
+
+def get_kaggle_auth(ctx=None) -> dict:
+    """ :return: {"username": <username>, "key": <key>} """
+    env = os.environ.copy()
+
+    if "KAGGLE_USERNAME" in env and "KAGGLE_KEY" in env:
+        return {"username": env["KAGGLE_USERNAME"], "key": env["KAGGLE_KEY"]}
+
+    kaggle_config = os.path.join(get_config(ctx)["kaggle_dir"], "kaggle.json")
+
+    if not os.path.exists(kaggle_config):
+        click.secho("Error: Expected Kaggle API authentication file at {}"
+                    .format(kaggle_config), fg="red")
+        click.secho("   Either set location in .tracker/config.json or set KAGGLE_USERNAME and "
+                    "KAGGLE_KEY environment variables", fg="red")
+        exit(1)
+
+    with open(kaggle_config, "r") as fp:
+        config_json = json.load(fp)
+
+    return {"username": config_json["username"], "key": config_json["key"]}

@@ -11,6 +11,7 @@ Copyright 2018, tracker.ml
 import datetime
 import hashlib
 import os
+import sys
 from shutil import copyfile
 
 import click
@@ -44,6 +45,15 @@ def init_dir(username: str, password: str, project_name: str, project_id: int, a
         "rolling": rolling,
         "max_roll": max_roll
     }
+
+    # Kaggle setup
+    kaggle_dir = ""
+    if "KAGGLE_CONFIG_DIR" in os.environ:
+        kaggle_dir = os.environ["KAGGLE_CONFIG_DIR"]
+    elif "win" in sys.platform():
+        kaggle_dir = "C:\\Users\\{}\\.kaggle".format(os.getlogin())
+    else:
+        kaggle_dir = "~/.kaggle"
 
     try:
         if username and password:
