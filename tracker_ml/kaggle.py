@@ -50,7 +50,6 @@ class KaggleAPI:
                 if chunk:
                     f.write(chunk)
 
-
 def set_kaggle_dir(kaggle_dir, ctx=None):
     """ manually set kaggle directory that contains API key """
     if not os.path.exists(kaggle_dir):

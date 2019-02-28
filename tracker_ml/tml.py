@@ -35,9 +35,8 @@ class __TMLRun:
 
         atexit.register(self.__save)
 
-    def login(self, username: str, password: str):
-        self.__api = TrackerMLAPI(username, password)
-        self.__api.ensure_token()
+    def set_api_key(self, api_key: str):
+        self.__api = TrackerMLAPI(api_key)
 
     def model(self, model_name: str):
         self.__model_name = model_name
@@ -95,13 +94,12 @@ class __TMLRun:
 __run = __TMLRun()
 
 
-def login(username: str, password: str):
+def set_api_key(api_key: str):
     """
     Set username and password to automatically upload run results to tracker.ml
-    :param username: tracker.ml username
-    :param password: tracker.ml password
+    :param api_key: tracker.ml api_key
     """
-    __run.login(username, password)
+    __run.set_api_key(api_key)
 
 
 def model(model_name: str):

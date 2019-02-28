@@ -50,23 +50,26 @@ def init_dir(username: str, password: str, project_name: str, project_id: int, a
     kaggle_dir = ""
     if "KAGGLE_CONFIG_DIR" in os.environ:
         kaggle_dir = os.environ["KAGGLE_CONFIG_DIR"]
-    elif "win" in sys.platform():
+    elif "win" in sys.platform:
         kaggle_dir = "C:\\Users\\{}\\.kaggle".format(os.getlogin())
     else:
         kaggle_dir = "~/.kaggle"
 
     try:
-        if username and password:
-            api = TrackerMLAPI(username, password)
 
-            if project_name and not project_id:
-                config["project_id"] = api.post_project(project_name)["id"]
-            elif project_id and not project_name:
-                for p in api.get_projects():
-                    if p["id"] == project_id:
-                        config["project_name"] = p["name"]
-                if not config["project_name"]:
-                    click.secho("Warning: no project with id {} found".format(project_id), fg="yellow")
+        if not api_key:
+            raise Exception("Tracker API Key must be set for updating models!")
+
+        api = TrackerMLAPI(api_key=api_key)
+
+        if project_name and not project_id:
+            config["project_id"] = api.post_project(project_name)["id"]
+        elif project_id and not project_name:
+            for p in api.get_projects():
+                if p["id"] == project_id:
+                    config["project_name"] = p["name"]
+            if not config["project_name"]:
+                click.secho("Warning: no project with id {} found".format(project_id), fg="yellow")
     except:
         click.secho("Warning: problem connecting to tracker.ml API", fg="yellow")
     finally:

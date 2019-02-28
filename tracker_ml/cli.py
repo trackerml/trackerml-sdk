@@ -129,17 +129,17 @@ def push(ctx):
 ###################
 # Kaggle Commands #
 ###################
-@cli.command()
-@click.pass_context
-@click.option("-c", "--competition_id", type=str, required=True)
-@click.option("-d", "--directory", click.Path(exists=True), default=".")
-def download(ctx, competition_id, directory):
-    """ Download Kaggle data """
-    if not ctx.obj['KAGGLE']:
-        click.secho("Error: option '-k' must be set", fg="red")
-        exit(1)
-    # TODO
+# @cli.command()
+# @click.pass_context
+# @click.option("-c", "--competition_id", type=str, required=True)
+# @click.option("-d", "--directory", click.Path(exists=True), default=".")
+# def download(ctx, competition_id, directory):
+#     """ Download Kaggle data """
+#     if not ctx.obj['KAGGLE']:
+#         click.secho("Error: option '-k' must be set", fg="red")
+#         exit(1)
+#     # TODO
 
 
 if __name__ == '__main__':
-    cli(obj={})
+    cli({}, None, None, None)

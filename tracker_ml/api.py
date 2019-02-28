@@ -12,56 +12,28 @@ Copyright 2018, tracker.ml
 """
 import json
 import time
-
+import base64
 import requests
 
 
 class TrackerMLAPI:
 
-    def __init__(self, username: str, password: str, base_url="http://127.0.0.1:9000"):
+    def __init__(self, api_key: str, base_url="http://127.0.0.1:9000"):
         self.__base_url = base_url
-        self.__username = username
-        self.__password = password
-        self._token = ""
-        self._expiration = 0
+        self.__api_key = api_key
 
     def _format_url(self, path: str) -> str:
         return "{}/{}".format(self.__base_url, path)
 
     def _format_headers(self, headers=None) -> dict:
-        self.ensure_token()
-
-        token_header = {"token": self._token}
-
-        if isinstance(headers, dict):
-            headers.update(token_header)
-        elif headers is None:
-            headers = token_header
-        else:
-            raise TypeError("headers must be a dict or None")
-
+        headers.update(self._get_api_key_header())
         return headers
 
-    def create_user(self):
-        url = self._format_url("signup")
-        body = json.dumps({"username": self.__username, "password": self.__password})
+    def _get_api_key_header(self):
+        bearer_token_string = "Bearer: " + base64.b64encode(self.__api_key)
+        bearer_token_header = {"Authorization": bearer_token_string}
+        return bearer_token_header
 
-        r = requests.post(url, data=body)
-        r.raise_for_status()
-
-    def ensure_token(self):
-        if self._token and int(time.time()) < self._expiration:
-            return
-
-        url = self._format_url("login?")
-        body = json.dumps({"username": self.__username, "password": self.__password})
-
-        r = requests.post(url, data=body)
-        r.raise_for_status()
-
-        data = r.json()
-        self._token = data["jwt"]
-        self._expiration = int(data["expiration"])
 
     def post_project(self, project_name: str) -> dict:
         url = self._format_url("project")
