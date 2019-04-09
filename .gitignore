@@ -106,4 +106,7 @@ venv.bak/
 .mypy_cache/
 
 test_project
+test_project_2
 .idea/
+
+UPDATING.md
