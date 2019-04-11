@@ -12,7 +12,7 @@ Copyright 2018, tracker.ml
 """
 import json
 import time
-
+import base64
 import requests
 
 
@@ -24,7 +24,7 @@ class TrackerMLAPI:
         self.__username = username
         self.__password = password
         self._token = ""
-        self._api_key = api_key
+        self._api_key = base64.b64encode(api_key)
         self._expiration = 0
 
     def _format_url(self, path: str) -> str:
